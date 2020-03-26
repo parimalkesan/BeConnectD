@@ -35,7 +35,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 1;
-    private DatabaseReference dbReference;
+    DatabaseReference dbReference;
+    FirebaseDatabase db;
 
 
     @Override
@@ -105,7 +106,9 @@ public class LoginActivity extends AppCompatActivity {
                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
                             String uid = firebaseUser.getUid();
                             String email = firebaseUser.getEmail();
-                            dbReference = FirebaseDatabase.getInstance().getReference("Users").child(uid);
+
+                            db=FirebaseDatabase.getInstance();
+                            dbReference = db.getReference("Users").child(uid);
 
                             HashMap<String, String> hashMap = new HashMap<>();
                             hashMap.put("Userid", uid);
@@ -118,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         Log.w("LoginActivity", "Authentication successful");
                                         Toast.makeText(LoginActivity.this, "Authentication Successful", Toast.LENGTH_LONG).show();
-                                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                     }
                                 }
                             });
