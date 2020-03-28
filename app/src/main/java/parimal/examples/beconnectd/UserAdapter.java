@@ -15,11 +15,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
 import java.util.List;
 
+import model.Message;
 import model.User;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -29,6 +37,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
      private Context context;
      private List<User> userList;
      public boolean ischat;
+     private String lastMessage;
 
      public UserAdapter(Context context,List<User> users,boolean ischat)
      {
@@ -57,6 +66,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
          else
          {
              Glide.with(context).load(user.getImageUrl()).into(holder.user_prof_image);
+         }
+
+         //display last message sent or received for each user
+         if(ischat)
+         {
+             last_Message(user.getUserId(),holder.lastMsgTv);
+         }
+         else
+         {
+             holder.lastMsgTv.setVisibility(View.GONE);
          }
 
          //check whether the user is online or offline(if the user had a chat
@@ -108,6 +127,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         public ImageView user_prof_image;
         private ImageView userStatus_on;
         private ImageView userStatus_off;
+        private TextView lastMsgTv;
         public ViewHolder(View view)
         {
             super(view);
@@ -115,6 +135,48 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             user_prof_image=view.findViewById(R.id.user_prof_image);
             userStatus_on=view.findViewById(R.id.img_status_on);
             userStatus_off=view.findViewById(R.id.img_status_off);
+            lastMsgTv=view.findViewById(R.id.last_msg_tv);
         }
+    }
+
+    //check for last message sent or received for a user
+    private void last_Message(final String userId, final TextView lastMsg)
+    {
+        lastMessage="default";
+        final FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
+        final DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("chats");
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
+                {
+                    //check for msgs between current user and other user
+                    Message message=dataSnapshot1.getValue(Message.class);
+                    if(firebaseUser.getUid().equals(message.getSenderId()) && userId.equals(message.getReceiverId())
+                            || userId.equals(message.getSenderId()) && firebaseUser.getUid().equals(message.getReceiverId()))
+                    {
+                        //set last message
+                        lastMessage=message.getMessage();
+                        Log.d(TAG, "onDataChange: "+lastMessage);
+                    }
+                }
+                switch (lastMessage)
+                {
+                    case "default":lastMsg.setText("No Message");
+                                    break;
+                    default:lastMsg.setText(lastMessage);
+                                     break;
+                }
+                lastMessage="default";
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 }

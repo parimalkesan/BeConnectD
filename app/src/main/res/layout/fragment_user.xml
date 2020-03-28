@@ -8,8 +8,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
         android:hint="Search User"
+        android:layout_marginTop="5dp"
         android:id="@+id/userSearch_edt"/>
 
 

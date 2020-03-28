@@ -18,7 +18,8 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         app:popupTheme="@style/menustyle"
-        app:titleTextColor="@android:color/white">
+        app:titleTextColor="@android:color/white"
+        app:titleTextAppearance="@style/MyTextAppearance">
     </androidx.appcompat.widget.Toolbar>
 
         <com.google.android.material.tabs.TabLayout
@@ -28,7 +29,8 @@
             android:background="@color/colorPrimary"
             app:tabIndicatorColor="#fff"
             app:tabSelectedTextColor="#fff"
-            app:tabTextColor="#fff" />
+            app:tabTextColor="#fff"
+            app:tabTextAppearance="@style/MyTextAppearance"/>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"

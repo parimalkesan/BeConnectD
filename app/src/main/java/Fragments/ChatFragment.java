@@ -21,6 +21,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import model.Message;
@@ -129,6 +131,7 @@ public class ChatFragment extends Fragment {
                     }
                 }
 
+                Collections.reverse(userList);
                 //create useradapter for recyclerView
                 userAdapter=new UserAdapter(getContext(),userList,true);
                 recyclerView.setAdapter(userAdapter);

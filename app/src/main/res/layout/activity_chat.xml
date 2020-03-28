@@ -24,8 +24,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/prof_image_chat"
-            android:layout_width="30dp"
-            android:layout_height="30dp"/>
+            android:layout_width="35dp"
+            android:layout_height="35dp"/>
 
         <TextView
             android:id="@+id/userEmail_chat"
@@ -34,7 +34,7 @@
             android:layout_marginLeft="5dp"
             android:text="userEmail"
             android:textColor="#ffffff"
-            android:textSize="22sp"
+            android:textSize="20dp"
             android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
 
@@ -64,13 +64,13 @@
             android:layout_centerVertical="true"
             android:background="@android:color/transparent"
             android:hint="Type a Message"
-            android:textSize="18sp"
+            android:textSize="20dp"
             android:gravity="center_vertical"
             android:textColor="#000000"/>
 
         <ImageButton
-            android:layout_width="35dp"
-            android:layout_height="60dp"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
             android:background="@drawable/ic_action_name"
             android:id="@+id/button_msg_send"
             android:layout_alignParentEnd="true"

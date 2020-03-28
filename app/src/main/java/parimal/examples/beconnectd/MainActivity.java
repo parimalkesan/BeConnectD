@@ -19,8 +19,11 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 import java.util.ArrayList;
@@ -29,6 +32,7 @@ import java.util.HashMap;
 import Fragments.ChatFragment;
 import Fragments.ProfileFragment;
 import Fragments.UserFragment;
+import model.Message;
 
 //MainActivity using tabLayout
 public class MainActivity extends AppCompatActivity {
@@ -47,19 +51,46 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Be ConnectD");
 
         //get tabLayout and ViewPager
-        TabLayout tabLayout=(TabLayout)findViewById(R.id.tab_layout);
-        ViewPager viewPager=(ViewPager)findViewById(R.id.view_pager);
+        final TabLayout tabLayout=(TabLayout)findViewById(R.id.tab_layout);
+        final ViewPager viewPager=(ViewPager)findViewById(R.id.view_pager);
 
-        ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
+        firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
 
-        //add fragemnts to viewpager
-        viewPagerAdapter.addFragment(new ChatFragment(),"Chats");
-        viewPagerAdapter.addFragment(new UserFragment(),"Users");
-        viewPagerAdapter.addFragment(new ProfileFragment(),"Profile");
+        databaseReference=FirebaseDatabase.getInstance().getReference("chats");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
+                int unreadMsg=0;
+                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
+                {
+                    Message message=dataSnapshot1.getValue(Message.class);
+                    if(message.getReceiverId().equals(firebaseUser.getUid())&&!message.getIsSeen().equals("true"))
+                    {
+                        unreadMsg++;
+                    }
+                }
+                //add fragemnts to viewpager
+                if(unreadMsg==0)
+                {
+                    viewPagerAdapter.addFragment(new ChatFragment(),"Chats");
+                }
+                else
+                {
+                    viewPagerAdapter.addFragment(new ChatFragment(),"("+unreadMsg+") Chats");
+                }
+                viewPagerAdapter.addFragment(new UserFragment(),"Users");
+                viewPagerAdapter.addFragment(new ProfileFragment(),"Profile");
 
-        //set adapter to viewPager
-        viewPager.setAdapter(viewPagerAdapter);
+                //set adapter to viewPager
+                viewPager.setAdapter(viewPagerAdapter);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         tabLayout.setupWithViewPager(viewPager);
 
         firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
@@ -146,5 +177,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         status("offline");
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }
