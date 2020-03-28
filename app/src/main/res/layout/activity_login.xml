@@ -3,8 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/colorPrimary"
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
+
 
     <ImageView
         android:id="@+id/logoMainScreen"
@@ -18,16 +20,19 @@
         app:srcCompat="@drawable/logo" />
 
     <Button
+
         android:id="@+id/googleSigninButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/common_google_signin_btn_icon_light"
-        android:text="SIGN IN WITH GOOGLE"
-        android:textSize="24sp"
+        android:background="@drawable/button_design"
+        android:drawableLeft="@drawable/common_google_signin_btn_icon_dark_normal"
+        android:text="Sign In with google"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logoMainScreen"
-        app:layout_constraintVertical_bias="0.049" />
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
