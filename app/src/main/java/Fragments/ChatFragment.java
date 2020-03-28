@@ -28,7 +28,8 @@ import model.User;
 import parimal.examples.beconnectd.R;
 import parimal.examples.beconnectd.UserAdapter;
 
-
+//to add a chat fragment to the app
+//displays the other users with whom we chatted
 public class ChatFragment extends Fragment {
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
@@ -36,6 +37,8 @@ public class ChatFragment extends Fragment {
 
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
+
+    //to store id of users we had chat
     private List<String> userList1;
 
     @Override
@@ -44,15 +47,18 @@ public class ChatFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
+        //get recycler view and linear layout maanger
         recyclerView = view.findViewById(R.id.recycler_view_chathistory);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        //get current user and database reference to root "chats"
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("chats");
 
         userList1 = new ArrayList<>();
 
+        //put userids in userlist1 with whom we had chat from root ""chats
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -68,7 +74,9 @@ public class ChatFragment extends Fragment {
                         userList1.add(message.getSenderId());
                     }
                 }
-                readMessages();
+
+                //call chatUsers
+                chatUsers();
             }
 
             @Override
@@ -80,7 +88,8 @@ public class ChatFragment extends Fragment {
         return view;
     }
 
-    private void readMessages()
+    //get list of users who had chats with current user and add users other than current user to userList
+    private void chatUsers()
     {
         userList=new ArrayList<>();
         databaseReference=FirebaseDatabase.getInstance().getReference("Users");
@@ -120,7 +129,8 @@ public class ChatFragment extends Fragment {
                     }
                 }
 
-                userAdapter=new UserAdapter(getContext(),userList);
+                //create useradapter for recyclerView
+                userAdapter=new UserAdapter(getContext(),userList,true);
                 recyclerView.setAdapter(userAdapter);
             }
 
@@ -131,7 +141,4 @@ public class ChatFragment extends Fragment {
         });
 
     }
-
-
-
 }

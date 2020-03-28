@@ -5,9 +5,19 @@
     tools:context="Fragments.UserFragment"
     android:background="#e6e6e6">
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:hint="Search User"
+        android:id="@+id/userSearch_edt"/>
+
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/recycler_view"/>
+        android:id="@+id/recycler_view"
+        android:layout_below="@+id/userSearch_edt"/>
 
 </RelativeLayout>

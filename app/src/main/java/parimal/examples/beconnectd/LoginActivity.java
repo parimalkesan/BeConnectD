@@ -27,7 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
-
+//login using Google Sign In method
 public class LoginActivity extends AppCompatActivity {
 
     Button signinButton;
@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     DatabaseReference dbReference;
     FirebaseDatabase db;
 
+    //hide status bar and action bar
     @Override
     protected void onResume() {
         super.onResume();
@@ -56,10 +57,10 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser firebaseUser=mAuth.getCurrentUser();
+        //if already signed up,move to StartActivity
         if(firebaseUser!=null)
         {
-            startActivity(new Intent(LoginActivity.this,StartActivity.class));
-            finish();
+            startActivity(new Intent(LoginActivity.this,StartActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         }
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -72,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        //set onclicklistener on signInButton
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +87,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    //get result from called intent and sign in
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -101,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
-
+//sign in using firebase googlesignin method
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d("LoginActivity", "firebaseAuthWithGoogle:" + acct.getId());
 
@@ -115,6 +118,7 @@ public class LoginActivity extends AppCompatActivity {
                             String uid = firebaseUser.getUid();
                             String email = firebaseUser.getEmail();
 
+                            //get database reference to root "Users" with child as currentuser Id
                             db=FirebaseDatabase.getInstance();
                             dbReference = db.getReference("Users").child(uid);
 
@@ -123,12 +127,14 @@ public class LoginActivity extends AppCompatActivity {
                             hashMap.put("Email", email);
                             hashMap.put("ImageUrl","default");
 
+                            //store user data in firebase database
                             dbReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
                                         Log.w("LoginActivity", "Authentication successful");
                                         Toast.makeText(LoginActivity.this, "Authentication Successful", Toast.LENGTH_LONG).show();
+                                        //move to MainActivity after signing In
                                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                     }
                                 }

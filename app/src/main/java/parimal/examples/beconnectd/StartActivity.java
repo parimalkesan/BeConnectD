@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 
+//to display splash screen
 public class StartActivity extends AppCompatActivity {
 
     @Override
@@ -15,22 +15,19 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
+        //hide status bar and actionbar
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-
-        ImageView imageView=(ImageView)findViewById(R.id.startscreenimage);
-        //Animation anim= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.animation);
-        //imageView.startAnimation(anim);
-
         Thread toNewActivity=new Thread(){
             @Override
             public void run() {
                 try {
                     sleep(2000);
+                    //move to MainActivity
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                     super.run();
@@ -41,7 +38,5 @@ public class StartActivity extends AppCompatActivity {
         };
 
         toNewActivity.start();
-
-
     }
 }
