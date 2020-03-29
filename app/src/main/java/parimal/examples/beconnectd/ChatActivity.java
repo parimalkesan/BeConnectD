@@ -171,11 +171,14 @@ public class ChatActivity extends AppCompatActivity {
     {
         dbReference=FirebaseDatabase.getInstance().getReference();
 
+        String timestamp=String.valueOf(System.currentTimeMillis());
+
         HashMap<String,Object> hashMap=new HashMap<>();
         hashMap.put("senderId",senderId);
         hashMap.put("receiverId",receiverId);
         hashMap.put("message",message);
         hashMap.put("isSeen","false");
+        hashMap.put("timestamp",timestamp);
 
         dbReference.child("chats").push().setValue(hashMap);
     }

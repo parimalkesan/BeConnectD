@@ -30,4 +30,14 @@
         android:visibility="gone"
         android:layout_below="@id/user_message"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/msg_timestamp"
+        android:text="29/03/2020 05:59pm"
+        android:textSize="14sp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"/>
+
 </RelativeLayout>

@@ -5,12 +5,22 @@ public class Message {
     private String receiverId;
     private String message;
     private String isSeen;
+    private String timestamp;
 
-    public Message(String isSeen,String message,String receiverId, String senderId) {
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Message(String isSeen, String message, String receiverId, String senderId, String timestamp) {
         this.message = message;
         this.receiverId = receiverId;
         this.senderId = senderId;
         this.isSeen=isSeen;
+        this.timestamp=timestamp;
     }
 
 

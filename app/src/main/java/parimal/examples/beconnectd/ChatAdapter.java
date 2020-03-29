@@ -2,6 +2,7 @@ package parimal.examples.beconnectd;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,10 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import model.Message;
 
@@ -84,6 +88,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             //set txtseen as GONE for all other messages
             holder.txtSeen.setVisibility(View.GONE);
         }
+
+        String tstamp=message.getTimestamp();
+
+        Calendar cal= Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(Long.parseLong(tstamp));
+        String dateTime= DateFormat.format("dd/MM/yyyy hh:mm aa",cal).toString();
+        holder.timestamp.setText(dateTime);
     }
 
     @Override
@@ -96,12 +107,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         public TextView user_message;
         public ImageView prof_image;
         public TextView txtSeen;
+        public TextView timestamp;
 
         public ViewHolder(View view) {
             super(view);
             user_message = view.findViewById(R.id.user_message);
             prof_image = view.findViewById(R.id.prof_image_message);
             txtSeen=view.findViewById(R.id.seen_status_tv);
+            timestamp=view.findViewById(R.id.msg_timestamp);
         }
     }
 
