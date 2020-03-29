@@ -163,7 +163,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                 {
                     //check for msgs between current user and other user
                     Message message=dataSnapshot1.getValue(Message.class);
-                    if(firebaseUser.getUid().equals(message.getSenderId()) && userId.equals(message.getReceiverId())
+                    if(firebaseUser!=null&&firebaseUser.getUid().equals(message.getSenderId()) && userId.equals(message.getReceiverId())
                             || userId.equals(message.getSenderId()) && firebaseUser.getUid().equals(message.getReceiverId()))
                     {
                         //set last message
