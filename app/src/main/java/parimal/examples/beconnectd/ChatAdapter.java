@@ -101,7 +101,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public int getItemCount() {
         return messagesList.size();
     }
-
     //viewholder class to provide a holder for views in recyclerview
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView user_message;

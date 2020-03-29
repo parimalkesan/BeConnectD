@@ -2,7 +2,9 @@ package Fragments;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -58,6 +60,8 @@ public class ProfileFragment extends Fragment {
     public static final int IMAGE_REQ = 1;
     private Uri ImageUrl;
     private StorageTask taskUpload;
+
+    SharedPreferences sharedPreferences;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -154,6 +158,11 @@ public class ProfileFragment extends Fragment {
                         HashMap<String,Object> hashMap=new HashMap<>();
                         hashMap.put("ImageUrl",uri);
                         databaseReference.updateChildren(hashMap);
+
+                        sharedPreferences=getContext().getSharedPreferences("sharedUrl", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor=sharedPreferences.edit();
+                        editor.putString("uri",uri);
+                        editor.commit();
 
                         progressDialog.dismiss();
                     }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -43,6 +44,10 @@ public class LoginActivity extends AppCompatActivity {
     DatabaseReference dbReference;
     FirebaseDatabase db;
 
+    public static String imageurl;
+
+    SharedPreferences sharedPreferences;
+
     //hide status bar and action bar
     @Override
     protected void onResume() {
@@ -61,6 +66,9 @@ public class LoginActivity extends AppCompatActivity {
 
         signinButton = (Button) findViewById(R.id.googleSigninButton);
         mAuth = FirebaseAuth.getInstance();
+
+        sharedPreferences=getSharedPreferences("sharedUrl",MODE_PRIVATE);
+        imageurl=sharedPreferences.getString("uri","default");
 
         FirebaseUser firebaseUser=mAuth.getCurrentUser();
         //if already signed up,move to StartActivity
@@ -131,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                             HashMap<String, String> hashMap = new HashMap<>();
                             hashMap.put("Userid", uid);
                             hashMap.put("Email", email);
-                            hashMap.put("ImageUrl","default");
+                            hashMap.put("ImageUrl",imageurl);
 
                             //store user data in firebase database
                             dbReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
