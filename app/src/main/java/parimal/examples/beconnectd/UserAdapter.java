@@ -26,7 +26,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -80,6 +82,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
          else
          {
              holder.lastMsgTv.setVisibility(View.GONE);
+             holder.user_timestamp.setVisibility(View.GONE);
          }
 
          //check whether the user is online or offline(if the user had a chat
@@ -170,7 +173,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                         String timestamp=message.getTimestamp();
                         Calendar cal= Calendar.getInstance(Locale.ENGLISH);
                         cal.setTimeInMillis(Long.parseLong(timestamp));
-                        tstamp= DateFormat.format("dd/MM/yyyy hh:mm aa",cal).toString();
+                        String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
+                        if(currentDate.equals(DateFormat.format("dd/MM/yyyy",cal).toString()))
+                        {
+                            tstamp= DateFormat.format("hh:mm aa",cal).toString();
+                        }
+                        else
+                        {
+                            tstamp=DateFormat.format("dd/MM/yyyy",cal).toString();
+                        }
                     }
                 }
                 //set lst message for each user

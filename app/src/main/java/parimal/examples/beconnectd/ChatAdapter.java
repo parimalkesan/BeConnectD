@@ -16,8 +16,10 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -89,11 +91,21 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             holder.txtSeen.setVisibility(View.GONE);
         }
 
+        //add timestamp to each message of users
         String tstamp=message.getTimestamp();
+        String dateTime="";
 
         Calendar cal= Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(Long.parseLong(tstamp));
-        String dateTime= DateFormat.format("dd/MM/yyyy hh:mm aa",cal).toString();
+        String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
+        if(currentDate.equals(DateFormat.format("dd/MM/yyyy",cal).toString()))
+        {
+            dateTime= DateFormat.format("hh:mm aa",cal).toString();
+        }
+        else
+        {
+            dateTime=DateFormat.format("dd/MM/yyyy",cal).toString();
+        }
         holder.timestamp.setText(dateTime);
     }
 
