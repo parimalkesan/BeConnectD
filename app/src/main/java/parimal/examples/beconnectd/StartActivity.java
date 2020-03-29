@@ -28,7 +28,7 @@ public class StartActivity extends AppCompatActivity {
                 try {
                     sleep(2000);
                     //move to MainActivity
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     super.run();
                 } catch (InterruptedException e) {

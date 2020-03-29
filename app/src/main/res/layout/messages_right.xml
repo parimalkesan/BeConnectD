@@ -4,14 +4,24 @@
     android:padding="8dp"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:layout_width="300dp"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true">
+        android:id="@+id/msg_timestamp"
+        android:text="29/03/2020 05:59pm"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="14sp"/>
 
-    
-    
+    <RelativeLayout
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/rel_layout_right"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/msg_timestamp">
+
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,6 +34,7 @@
         android:background="@drawable/message_format_right"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+
         android:id="@+id/user_message"
         android:text="hello"
         android:textSize="18sp"
@@ -38,16 +49,6 @@
          android:layout_below="@id/user_message"
          android:layout_alignParentRight="true"
          android:layout_alignParentEnd="true"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/msg_timestamp"
-            android:text="29/03/2020 05:59pm"
-            android:textSize="14sp"
-            android:layout_toLeftOf="@id/user_message"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"/>
 
 </RelativeLayout>
 </RelativeLayout>

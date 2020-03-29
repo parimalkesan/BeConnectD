@@ -79,25 +79,25 @@ public class ProfileFragment extends Fragment {
         //get reference to FirebaseStorage with root as"Uploads"
         storageReference = FirebaseStorage.getInstance().getReference("Uploads");
 
-        //add valueeventlistener to set email and profile image of current user
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                prof_email.setText(user.getEmail());
-                if ("default".equals(user.getImageUrl())) {
-                    prof_image_view.setImageResource(R.mipmap.ic_launcher);
-                } else {
-                    Glide.with(getContext()).load(user.getImageUrl()).into(prof_image_view);
+            //add valueeventlistener to set email and profile image of current user
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    prof_email.setText(user.getEmail());
+                    if ("default".equals(user.getImageUrl())) {
+                        prof_image_view.setImageResource(R.mipmap.ic_launcher);
+                    } else {
+                        if (getActivity()!= null)
+                            Glide.with(getContext()).load(user.getImageUrl()).into(prof_image_view);
+                    }
+                    }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
                 }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+            });
 
         //add onclicklistener to prof_image_view to set profle image
         prof_image_view.setOnClickListener(new View.OnClickListener() {
