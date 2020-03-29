@@ -2,6 +2,7 @@ package parimal.examples.beconnectd;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import model.Message;
 import model.User;
@@ -38,6 +41,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
      private List<User> userList;
      public boolean ischat;
      private String lastMessage;
+     public static String tstamp;
 
      public UserAdapter(Context context,List<User> users,boolean ischat)
      {
@@ -71,7 +75,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
          //display last message sent or received for each user
          if(ischat)
          {
-             last_Message(user.getUserId(),holder.lastMsgTv);
+             last_Message(user.getUserId(),holder.lastMsgTv,holder.user_timestamp);
          }
          else
          {
@@ -128,6 +132,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         private ImageView userStatus_on;
         private ImageView userStatus_off;
         private TextView lastMsgTv;
+        private  TextView user_timestamp;
         public ViewHolder(View view)
         {
             super(view);
@@ -136,13 +141,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             userStatus_on=view.findViewById(R.id.img_status_on);
             userStatus_off=view.findViewById(R.id.img_status_off);
             lastMsgTv=view.findViewById(R.id.last_msg_tv);
+            user_timestamp=view.findViewById(R.id.user_timestamp);
         }
     }
 
-    //check for last message sent or received for a user
-    private void last_Message(final String userId, final TextView lastMsg)
+    //check for last message sent or received for a user and its timestamp
+    private void last_Message(final String userId, final TextView lastMsg,final TextView user_timestamp)
     {
         lastMessage="default";
+        tstamp="";
         final FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("chats");
 
@@ -158,9 +165,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                     {
                         //set last message
                         lastMessage=message.getMessage();
-                        Log.d(TAG, "onDataChange: "+lastMessage);
+
+                        //get timestamp of last message
+                        String timestamp=message.getTimestamp();
+                        Calendar cal= Calendar.getInstance(Locale.ENGLISH);
+                        cal.setTimeInMillis(Long.parseLong(timestamp));
+                        tstamp= DateFormat.format("dd/MM/yyyy hh:mm aa",cal).toString();
                     }
                 }
+                //set lst message for each user
                 switch (lastMessage)
                 {
                     case "default":lastMsg.setText("No Message");
@@ -168,7 +181,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                     default:lastMsg.setText(lastMessage);
                                      break;
                 }
+                //set the timestamp for each user
+                switch (tstamp)
+                {
+                    case "":user_timestamp.setText("");
+                        break;
+                    default:user_timestamp.setText(tstamp);
+                        break;
+                }
                 lastMessage="default";
+                tstamp="";
             }
 
             @Override
