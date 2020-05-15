@@ -20,7 +20,6 @@ public class User {
         this.Email=email;
         this.ImageUrl=imageUrl;
         this.Status=Status;
-        this.Userid=userId;
     }
 
     public User()

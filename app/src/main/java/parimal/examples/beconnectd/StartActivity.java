@@ -5,10 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 //to display splash screen
 public class StartActivity extends AppCompatActivity {
+
+    private FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,21 +29,27 @@ public class StartActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        Thread toNewActivity=new Thread(){
+        //create new handler for StartActivity
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                try {
-                    sleep(2000);
-                    //move to MainActivity
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    super.run();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                //check for any logged in user and start the MainActivity class directly
+                if(firebaseUser!=null) {
+                    startActivity(new Intent(StartActivity.this, MainActivity.class));
+                }
+                //else start the LoginActivity class for user to login
+                else
+                {
+                    startActivity(new Intent(StartActivity.this,LoginActivity.class));
                 }
             }
-        };
+        },3000);//open the new Activity after a delay of 3s
+    }
 
-        toNewActivity.start();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //get current firebase user
+        firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
     }
 }

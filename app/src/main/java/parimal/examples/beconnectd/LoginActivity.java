@@ -70,13 +70,6 @@ public class LoginActivity extends AppCompatActivity {
         sharedPreferences=getSharedPreferences("sharedUrl",MODE_PRIVATE);
         imageurl=sharedPreferences.getString("uri","default");
 
-        FirebaseUser firebaseUser=mAuth.getCurrentUser();
-        //if already signed up,move to StartActivity
-        if(firebaseUser!=null)
-        {
-            startActivity(new Intent(LoginActivity.this,StartActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-        }
-
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

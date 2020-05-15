@@ -109,7 +109,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        //get database reference to chiled node of other user and set its email and profile image
+        //get database reference to child node of other user and set its email and profile image
         firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
         dbReference= FirebaseDatabase.getInstance().getReference("Users").child(userId);
 
