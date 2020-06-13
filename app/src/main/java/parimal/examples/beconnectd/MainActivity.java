@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
 
         databaseReference=FirebaseDatabase.getInstance().getReference("chats");
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

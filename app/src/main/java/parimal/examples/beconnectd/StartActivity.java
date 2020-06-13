@@ -11,6 +11,7 @@ import android.view.View;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 //to display splash screen
 public class StartActivity extends AppCompatActivity {
@@ -22,12 +23,13 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        //hide status bar and actionbar
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
+        //hide actionbar
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+
+        //set offline capability for data
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        FirebaseDatabase.getInstance().getReference("chats").keepSynced(true);
 
         //create new handler for StartActivity
         new Handler().postDelayed(new Runnable() {
