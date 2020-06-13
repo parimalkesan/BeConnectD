@@ -48,21 +48,15 @@ public class LoginActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
 
-    //hide status bar and action bar
-    @Override
-    protected void onResume() {
-        super.onResume();
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //hide action bar
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         signinButton = (Button) findViewById(R.id.googleSigninButton);
         mAuth = FirebaseAuth.getInstance();
